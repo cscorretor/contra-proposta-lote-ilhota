@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análise de Lucratividade e Estrutura Jurídica</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+            padding: 60px 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 50px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #1e3c72;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 4px solid #667eea;
+            display: flex;
+            align-items: center;
+        }
+
+        .section-title::before {
+            content: "💰";
+            font-size: 1.2em;
+            margin-right: 15px;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .highlight-box h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .comparison-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 3px solid #e0e0e0;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+
+        .card.winner {
+            border-color: #10b981;
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        }
+
+        .card-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: #1e3c72;
+        }
+
+        .card.winner .card-title {
+            color: #10b981;
+        }
+
+        .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #667eea;
+            margin: 20px 0;
+        }
+
+        .card.winner .value {
+            color: #10b981;
+        }
+
+        .profit-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 1.1em;
+        }
+
+        .calculation-box {
+            background: #f8f9fa;
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .calculation-box .calc-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #dee2e6;
+            font-size: 1.1em;
+        }
+
+        .calculation-box .calc-item:last-child {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.3em;
+            color: #10b981;
+            padding-top: 20px;
+            margin-top: 10px;
+            border-top: 3px solid #10b981;
+        }
+
+        .info-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin: 25px 0;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .info-table thead {
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: white;
+        }
+
+        .info-table th {
+            padding: 20px;
+            text-align: left;
+            font-size: 1.1em;
+            font-weight: 600;
+        }
+
+        .info-table td {
+            padding: 18px 20px;
+            background: white;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .info-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .info-table tbody tr:nth-child(even) td {
+            background: #f8f9fa;
+        }
+
+        .info-table tbody tr:hover td {
+            background: #e7f3ff;
+        }
+
+        .security-section {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 15px;
+            margin: 40px 0;
+        }
+
+        .security-section h3 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+        }
+
+        .security-section h3::before {
+            content: "🔐";
+            margin-right: 15px;
+            font-size: 1.3em;
+        }
+
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .step {
+            background: white;
+            color: #333;
+            padding: 25px;
+            border-radius: 10px;
+            border-left: 6px solid #10b981;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            position: relative;
+            padding-left: 80px;
+        }
+
+        .step::before {
+            content: attr(data-step);
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #10b981;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+
+        .step h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            color: white;
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .cta-section h2 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-section p {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .key-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .key-point {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .key-point .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .key-point h4 {
+            color: #1e3c72;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+        }
+
+        .key-point p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .section-title {
+                font-size: 1.5em;
+            }
+
+            .comparison-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .step {
+                padding-left: 70px;
+            }
+
+            .info-table {
+                font-size: 0.9em;
+            }
+
+            .info-table th,
+            .info-table td {
+                padding: 12px;
+            }
+        }
+
+        .checkmark {
+            color: #10b981;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .emphasis {
+            background: #fef3c7;
+            padding: 3px 8px;
+            border-radius: 5px;
+            font-weight: bold;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 ANÁLISE DE LUCRATIVIDADE E ESTRUTURA JURÍDICA</h1>
+            <p>Proposta para o Proprietário (Credor Fiduciário)</p>
+        </div>
+
+        <div class="content">
+            <!-- Seção 1: Oportunidade -->
+            <section class="section">
+                <h2 class="section-title">A Oportunidade de Lucratividade</h2>
+                
+                <div class="highlight-box">
+                    <h3>🎯 O Grande Negócio</h3>
+                    <p style="font-size: 1.2em;">Transforme R$ 170.000,00 (à vista) em um ativo rentável com garantia máxima!</p>
+                </div>
+
+                <div class="comparison-cards">
+                    <div class="card">
+                        <div class="card-title">💵 Venda à Vista</div>
+                        <div class="value">R$ 170.000</div>
+                        <p style="color: #666; font-size: 1.1em;">Valor de Recebimento</p>
+                        <div style="margin-top: 20px; padding: 15px; background: #fee; border-radius: 10px;">
+                            <strong style="color: #dc2626;">Lucro: R$ 0,00</strong>
+                            <p style="margin-top: 5px; font-size: 0.9em; color: #666;">(Benchmark - Valor de referência)</p>
+                        </div>
+                    </div>
+
+                    <div class="card winner">
+                        <div class="card-title">🚀 Venda a Prazo</div>
+                        <div class="value">R$ 268.000</div>
+                        <p style="color: #666; font-size: 1.1em;">Valor Total (Entrada + Parcelas)</p>
+                        <div class="profit-badge">
+                            ✨ LUCRO: R$ 98.000,00
+                        </div>
+                    </div>
+                </div>
+
+                <div class="calculation-box">
+                    <h3 style="color: #1e3c72; margin-bottom: 20px; font-size: 1.4em;">💡 Detalhamento do Lucro</h3>
+                    <div class="calc-item">
+                        <span>Entrada Recebida:</span>
+                        <span style="color: #667eea; font-weight: bold;">R$ 30.000,00</span>
+                    </div>
+                    <div class="calc-item">
+                        <span>Parcelas (R$ 1.400 × 170 meses):</span>
+                        <span style="color: #667eea; font-weight: bold;">R$ 238.000,00</span>
+                    </div>
+                    <div class="calc-item">
+                        <span>Total Nominal Recebido:</span>
+                        <span>R$ 268.000,00</span>
+                    </div>
+                    <div class="calc-item">
+                        <span>✅ Lucro Total (Juros + Correção):</span>
+                        <span>R$ 98.000,00</span>
+                    </div>
+                </div>
+
+                <div style="background: #dbeafe; padding: 25px; border-radius: 10px; border-left: 5px solid #3b82f6;">
+                    <p style="font-size: 1.15em; color: #1e40af; line-height: 1.8;">
+                        <strong>💰 O que representa este lucro?</strong><br>
+                        Os <span class="emphasis">R$ 98.000,00 a mais</span> representam os <strong>juros (remuneração)</strong> e a <strong>correção monetária (proteção contra inflação)</strong> que seu dinheiro irá render ao longo dos 14 anos.
+                    </p>
+                </div>
+            </section>
+
+            <!-- Seção 2: Estrutura Financeira -->
+            <section class="section">
+                <h2 class="section-title">A Estrutura Financeira de Lucro</h2>
+                
+                <p style="font-size: 1.15em; margin-bottom: 25px; color: #555;">
+                    Para justificar o preço a prazo e formalizar esse lucro, a taxa de juros e o índice de correção são essenciais:
+                </p>
+
+                <table class="info-table">
+                    <thead>
+                        <tr>
+                            <th>Componente</th>
+                            <th>Função para o Proprietário</th>
+                            <th>Definição na Contraproposta</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Preço a Prazo (VP)</strong></td>
+                            <td>Valor de referência do negócio a ser declarado</td>
+                            <td><strong style="color: #667eea;">R$ 220.000,00</strong><br><small>(Valor de mercado a prazo)</small></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Taxa de Juros (i)</strong></td>
+                            <td>Sua rentabilidade sobre o capital emprestado (R$ 190.000,00)</td>
+                            <td><strong style="color: #667eea;">0,5% a 0,8% a.m.</strong><br><small>(Taxa conservadora para fechar o prazo)</small></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Correção Monetária</strong></td>
+                            <td>Protege seu capital e lucro contra a inflação anual</td>
+                            <td><strong style="color: #667eea;">IPCA Anual</strong><br><small>(Mais estável e aceito que IGPM)</small></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Duração (n)</strong></td>
+                            <td>Prazo necessário para que o capital seja pago</td>
+                            <td><strong style="color: #667eea;">170 meses</strong><br><small>(Fechado para parcela de R$ 1.400,00)</small></td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="key-points">
+                    <div class="key-point">
+                        <div class="icon">📈</div>
+                        <h4>Rentabilidade</h4>
+                        <p>Juros mensais garantem remuneração constante do seu capital</p>
+                    </div>
+                    <div class="key-point">
+                        <div class="icon">🛡️</div>
+                        <h4>Proteção</h4>
+                        <p>IPCA protege contra inflação preservando poder de compra</p>
+                    </div>
+                    <div class="key-point">
+                        <div class="icon">💵</div>
+                        <h4>Fluxo de Caixa</h4>
+                        <p>R$ 1.400 mensais por 14 anos = renda passiva constante</p>
+                    </div>
+                    <div class="key-point">
+                        <div class="icon">⏱️</div>
+                        <h4>Longo Prazo</h4>
+                        <p>170 meses garantem lucro expressivo e previsível</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Seção 3: Garantia Jurídica -->
+            <section class="section">
+                <h2 class="section-title">Garantia Jurídica: Máxima Segurança</h2>
+
+                <div class="security-section">
+                    <h3>🔐 O Ponto Chave para o Proprietário</h3>
+                    <p style="font-size: 1.2em; margin-bottom: 25px; line-height: 1.8;">
+                        O fato de o lote estar quitado permite uma estrutura mais limpa, e a <strong>Alienação Fiduciária</strong> é a chave da sua segurança máxima.
+                    </p>
+
+                    <table class="info-table" style="margin-top: 30px;">
+                        <thead>
+                            <tr>
+                                <th>Situação</th>
+                                <th>Ação Jurídica (Sua Vantagem)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Transferência</strong></td>
+                                <td>Outorga de Escritura Definitiva pela Loteadora direto para o nome da Cliente</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Garantia</strong></td>
+                                <td><strong style="color: #10b981;">Registro da Alienação Fiduciária</strong> na Matrícula do Imóvel em seu favor</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Inadimplência</strong></td>
+                                <td><strong style="color: #f59e0b;">Execução Extrajudicial (Lei 9.514/97)</strong> - Processo rápido e eficiente</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3 style="font-size: 1.8em; color: #1e3c72; margin: 40px 0 25px 0;">
+                    🔄 Fluxo Jurídico Otimizado (Direto ao Lucro)
+                </h3>
+
+                <div class="flow-steps">
+                    <div class="step" data-step="1">
+                        <h4>Contrato de Mútuo/Venda a Prazo</h4>
+                        <p>Proprietário e Cliente assinam o contrato detalhando as <strong>170 parcelas</strong>, <strong>juros</strong> e <strong>correção monetária</strong>.</p>
+                    </div>
+
+                    <div class="step" data-step="2">
+                        <h4>Outorga de Escritura (Loteadora → Cliente)</h4>
+                        <p>A Loteadora emite a <strong>escritura definitiva</strong> diretamente para a cliente, mencionando a <strong>Alienação Fiduciária</strong> constituída em favor do Proprietário (Credor Fiduciário).</p>
+                    </div>
+
+                    <div class="step" data-step="3">
+                        <h4>Registro Único no Cartório</h4>
+                        <p>O Cartório de Registro de Imóveis (CRI) registra a <strong>Transferência da Propriedade</strong> e a <strong>Constituição da Alienação Fiduciária</strong> em um único movimento eficiente.</p>
+                    </div>
+                </div>
+
+                <div style="background: #ecfdf5; padding: 30px; border-radius: 15px; border: 3px solid #10b981; margin-top: 30px;">
+                    <h3 style="color: #065f46; font-size: 1.5em; margin-bottom: 15px;">
+                        ✅ Por que a Alienação Fiduciária é a melhor garantia?
+                    </h3>
+                    <ul style="list-style: none; padding: 0; font-size: 1.1em; color: #065f46;">
+                        <li style="padding: 10px 0; border-bottom: 1px solid #a7f3d0;">
+                            <span class="checkmark">✓</span> <strong>Execução Extrajudicial:</strong> Retomada rápida do imóvel sem processo judicial demorado
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #a7f3d0;">
+                            <span class="checkmark">✓</span> <strong>Segurança Máxima:</strong> Garantia real registrada na matrícula do imóvel
+                        </li>
+                        <li style="padding: 10px 0; border-bottom: 1px solid #a7f3d0;">
+                            <span class="checkmark">✓</span> <strong>Preferência Legal:</strong> Prioridade sobre outros credores
+                        </li>
+                        <li style="padding: 10px 0;">
+                            <span class="checkmark">✓</span> <strong>Lei 9.514/97:</strong> Legislação específica que protege o credor fiduciário
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Seção CTA Final -->
+            <div class="cta-section">
+                <h2>🎯 Conclusão: Uma Excelente Oportunidade!</h2>
+                <p>
+                    <strong>Você transforma um capital estagnado</strong> (o valor do lote) em um <strong>fluxo de caixa mensal rentável</strong> de R$ 1.400 por 14 anos, corrigido anualmente pelo IPCA.
+                </p>
+                <p>
+                    <strong>Garante o recebimento</strong> através da <span class="emphasis">Alienação Fiduciária</span>, a forma mais robusta de garantia imobiliária no Brasil.
+                </p>
+                <p style="font-size: 1.5em; margin-top: 30px; font-weight: bold;">
+                    💰 Lucro Total: R$ 98.000,00 + Segurança Jurídica Máxima
+                </p>
+                <div style="margin-top: 40px; padding: 30px; background: rgba(255,255,255,0.2); border-radius: 15px;">
+                    <h3 style="font-size: 1.8em; margin-bottom: 15px;">📋 Próxima Ação</h3>
+                    <p style="font-size: 1.2em;">
+                        Enviar a contraproposta para a cliente com a certeza de que a estrutura jurídica garante sua rentabilidade e segurança patrimonial.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
